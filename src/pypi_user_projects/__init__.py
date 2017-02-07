@@ -14,10 +14,14 @@ def get_html(nick):
 
 def parse_projects(html):
     dom = dhtmlparser.parseString(html)
-    table = dom.find("table", {"class": "list"} )
+    tables = dom.find("table", {"class": "list"})
 
-    return table
+    def select_project_link(link):
+        return link.params.get("href", "").startswith("/pypi")
+
+    links = tables[0].find("a", fn=select_project_link)
+
+    return links
 
 print(parse_projects(get_html("bystroushaak")))
-
 
