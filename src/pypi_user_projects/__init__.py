@@ -3,6 +3,13 @@
 import requests
 import dhtmlparser
 
+
+class Project:
+    def __init__(self, name, url):
+        self.name = name
+        self.url = url
+
+
 def get_html(nick):
     url = "https://pypi.python.org/pypi?%3Aaction=search&term=" + nick + "&submit=search"
 
