@@ -26,9 +26,25 @@ def parse_projects(html):
     def select_project_link(link):
         return link.params.get("href", "").startswith("/pypi")
 
+    def create_project(link):
+        url = link.params.get("href", "")
+        name = link.getContent()
+
+        return Project(name, url)
+
     links = tables[0].find("a", fn=select_project_link)
+    return list(map(create_project, links))
 
-    return links
+#print()
+projects = parse_projects(get_html("bystroushaak"))
 
-print(parse_projects(get_html("bystroushaak")))
+for p in projects:
+    print(p.name)
+    print(p.url)
+
+
+
+
+
+
 
