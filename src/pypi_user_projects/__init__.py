@@ -17,6 +17,11 @@ def get_html(nick):
 
     return response.text
 
+def get_project_html(url):
+    response = requests.get(url)
+    return response.text
+
+
 #print(get_html("bystroushaak"))
 
 def parse_projects(html):
@@ -24,7 +29,14 @@ def parse_projects(html):
     tables = dom.find("table", {"class": "list"})
 
     def select_project_link(link):
-        return link.params.get("href", "").startswith("/pypi")
+        if not link.params.get("href", "").startswith("/pypi"):
+            return False
+        url = "https://pypi.python.org/" + link.params.get("href", "")
+        project_html = get_project_html(url)
+        project_dom = dhtmlparser.parseString(project_html)
+
+        #todo find author in project_dom; return true / false
+
 
     def create_project(link):
         url = link.params.get("href", "")
